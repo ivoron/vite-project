@@ -1,7 +1,17 @@
 <script setup>
-import TodoList from './components/TodoList.vue'
+import TodoList from "@components/TodoList.vue";
 </script>
 
 <template>
-  <TodoList/>
+  <div class="app w3-light-gray">
+    <TodoList title="Список задач"/>
+  </div>
 </template>
+
+<style scoped>
+.app {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 5rem;
+}
+</style>
