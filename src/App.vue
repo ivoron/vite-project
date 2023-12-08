@@ -4,7 +4,7 @@ import TodoList from "@components/TodoList.vue";
 
 <template>
   <div class="app w3-light-gray">
-    <TodoList title="Список задач"/>
+    <TodoList app_title="Список задач"/>
   </div>
 </template>
 
