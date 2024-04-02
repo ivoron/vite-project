@@ -1,17 +1,51 @@
-<script setup>
-import TodoList from "@components/TodoList.vue";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
+import TransitionsList from "@components/TransactionsList.vue"
+
+interface Transaction {
+  title: string,
+  sum: number,
+  id: number
+}
+
+const transactions = ref<Transaction[]>([
+  {
+    title: "Продукты",
+    sum: -658,
+    id: 0
+  },
+  {
+    title: "Аренда",
+    sum: -50000,
+    id: 1
+  },
+  {
+    title: "Аванс",
+    sum: 99800,
+    id: 2
+  }
+])
+
+const balance = computed(() => {
+  return transactions.value.reduce((total, transaction) => {
+    return total + transaction.sum
+  }, 0)
+})
+
 </script>
 
 <template>
-  <div class="app w3-light-gray">
-    <TodoList app_title="Список задач"/>
+  <div class="app">
+    <h2>Список расходов/доходов</h2>
+    <strong>
+      Ваш баланс: {{balance}} RUB
+    </strong>
+    <TransitionsList :transactions="transactions" ></TransitionsList>
   </div>
 </template>
 
 <style scoped>
 .app {
-  width: 100vw;
-  min-height: 100vh;
-  padding: 5rem;
+  padding: 1rem;
 }
 </style>
