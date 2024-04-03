@@ -1,19 +1,16 @@
 <script lang="ts" setup>
 import { computed, reactive } from "vue";
+import { TransactionType } from "../shared/types/types";
 
-const props = defineProps({
-  transactionType: {
-    type: String || null,
-    validate: (val) => ["income", "expense"].includes(val),
-    default: null,
-  },
+interface Props {
+  transactionType: TransactionType
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  transactionType: null
 });
 
-const isPositive = computed(() => props.transactionType === "income")
-
-const isIncorrect = computed(() => {
-  return transactionModel.sum <= 0 || transactionModel.title.length === 0
-})
+const emit = defineEmits(["addTransaction", "cancelTransaction"]);
 
 const transactionModel = reactive({
   title: "",
@@ -25,14 +22,17 @@ const resetTransactionModel = () => {
   transactionModel.title = "";
 };
 
-const emit = defineEmits(["addTransaction", "cancelTransaction"]);
+const isPositive = computed(() => props.transactionType === "income")
+
+const isIncorrect = computed(() => {
+  return transactionModel.sum <= 0 || transactionModel.title.length === 0
+})
 
 const addTransaction = () => {
-  const sum = isPositive.value ? transactionModel.sum : - transactionModel.sum
   emit("addTransaction", {
     ...transactionModel,
     date: Date.now(),
-    sum
+    sum: isPositive.value ? transactionModel.sum : - transactionModel.sum
   });
   resetTransactionModel();
 };
@@ -51,11 +51,11 @@ const cancelTransaction = () => {
     <form>
       <section>
         <label for="title">Наименование </label>
-        <input name="title" type="text" v-model="transactionModel.title" placeholder="Введите наименование"/>
+        <input name="title" type="text" v-model="transactionModel.title" placeholder="Введите наименование" />
       </section>
       <section>
         <label for="sum">Сумма </label>
-        <input name="sum" type="number" min="0" v-model="transactionModel.sum" placeholder="Введите сумму"/>
+        <input name="sum" type="number" min="0" v-model="transactionModel.sum" placeholder="Введите сумму" />
       </section>
     </form>
     <button :disabled="isIncorrect" @click="addTransaction">добавить</button>

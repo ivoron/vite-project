@@ -3,19 +3,12 @@ import { ref, watchEffect } from "vue";
 import TransitionsHistory from "./components/TransitionsHistory.vue";
 import BalanceManager from "./components/BalanceManager.vue";
 import NewTransactionModal from "./components/NewTransactionModal.vue";
+import { ITransaction } from "./shared/types/types";
 
-interface Transaction {
-  title: string;
-  sum: number;
-  date: number;
-}
-
-type transactionType = "income" | "expense"
-
-const transactions = ref<Transaction[]>([
+const transactions = ref([
   {
     title: "Продукты",
-    sum: -658,
+    sum: -500,
     date: 0,
   },
   {
@@ -25,7 +18,7 @@ const transactions = ref<Transaction[]>([
   },
   {
     title: "Аванс",
-    sum: 99800,
+    sum: 99000,
     date: 2,
   },
 ]);
@@ -57,7 +50,7 @@ const hideTransactionMaster = () => {
   isTransactionModalVisible.value = false;
 };
 
-const addTransaction = (transaction: Transaction) => {
+const addTransaction = (transaction: ITransaction) => {
   transactions.value.push(transaction);
   hideTransactionMaster();
 };

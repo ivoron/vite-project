@@ -1,16 +1,19 @@
 <script lang="ts" setup>
 
-defineProps({
+interface Props {
   transaction: {
-    type: Object,
-    default: {}
+    title: string,
+    sum: number,
+    date: number
   }
-})
+}
+
+defineProps<Props>()
 
 </script>
 
 <template>
-  <div class="transaction-card">
+  <div :class="['transaction-card', transaction.sum > 0 ? 'transaction-card__income' : 'transaction-card__expense']">
     {{ transaction.title }} : {{ transaction.sum }} RUB
   </div>
 </template>

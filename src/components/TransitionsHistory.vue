@@ -1,14 +1,21 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import Transaction from "./Transaction.vue";
+import { ITransaction } from "../shared/types/types";
 
-const props = defineProps({
-  transactions: [],
+
+interface Props {
+  transactions: ITransaction[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  transactions: () => []
 });
 
 const sortedTransactions = computed(() => {
-  return props.transactions.toSorted((a, b) => b.date - a.date)
+  return [...props.transactions].sort((a, b) => b.date - a.date)
 })
+
 </script>
 
 <template>
