@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
   transactions: () => []
 });
 
+const emit = defineEmits(['deleteTransaction', 'editTransaction'])
+
 const sortedTransactions = computed(() => {
   return [...props.transactions].sort((a, b) => b.date - a.date)
 })
@@ -25,6 +27,8 @@ const sortedTransactions = computed(() => {
       v-for="transaction in sortedTransactions"
       :key="transaction.date"
       :transaction="transaction"
+      @delete="() => emit('deleteTransaction', transaction.date)"
+      @edit="() => emit('editTransaction', transaction.date)"
     />
   </div>
 </template>

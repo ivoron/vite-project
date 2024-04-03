@@ -54,6 +54,15 @@ const addTransaction = (transaction: ITransaction) => {
   transactions.value.push(transaction);
   hideTransactionMaster();
 };
+
+const editTransaction = (date) => {
+  //todo
+}
+
+const deleteTransaction = (date) => {
+  transactions.value = transactions.value.filter(transaction => transaction.date !== date)
+}
+
 </script>
 
 <template>
@@ -62,7 +71,8 @@ const addTransaction = (transaction: ITransaction) => {
     <NewTransactionModal v-if="isTransactionModalVisible" :transactionType="transactionType"
       @addTransaction="addTransaction" @cancelTransaction="hideTransactionMaster" />
     <BalanceManager :income="income" :expense="expense" @createTransaction="showTransactionMaster" />
-    <TransitionsHistory :transactions="transactions" />
+    <TransitionsHistory :transactions="transactions" @delete-transaction="deleteTransaction"
+      @edit-transaction="editTransaction" />
   </div>
 </template>
 
