@@ -22,7 +22,7 @@ const sortedTransactions = computed(() => {
 
 <template>
   <div class="transactions-list">
-    <h3>История</h3>
+    <h3>История {{ sortedTransactions.length === 0 ? ' пуста': '' }}</h3>
     <Transaction
       v-for="transaction in sortedTransactions"
       :key="transaction.date"

@@ -25,6 +25,7 @@ const transactions = ref([
 
 const income = ref(0);
 const expense = ref(0);
+const tab = ref(0)
 const isTransactionModalVisible = ref(false);
 const transactionType = ref(null);
 
@@ -67,7 +68,23 @@ const deleteTransaction = (date) => {
 
 <template>
   <div class="app">
+
     <h2>Список расходов/доходов</h2>
+    <v-tabs bg-color="indigo-darken-2" fixed-tabs v-model="tab">
+      <v-tab>
+        Весь список
+      </v-tab>
+      <v-tab>
+        Доходы
+      </v-tab>
+      <v-tab>
+        Расходы
+      </v-tab>
+    </v-tabs>
+    <v-window v-model="tab">
+      {{ tab }}
+    </v-window>
+
     <NewTransactionModal v-if="isTransactionModalVisible" :transactionType="transactionType"
       @addTransaction="addTransaction" @cancelTransaction="hideTransactionMaster" />
     <BalanceManager :income="income" :expense="expense" @createTransaction="showTransactionMaster" />
@@ -75,10 +92,3 @@ const deleteTransaction = (date) => {
       @edit-transaction="editTransaction" />
   </div>
 </template>
-
-<style scoped>
-.app {
-  padding: 1rem;
-  width: 50%;
-}
-</style>

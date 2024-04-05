@@ -11,46 +11,19 @@ withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['createTransaction'])
 
-const showNewTransactionModal = (e) => {
-  emit('createTransaction', e.target.id)
+const showNewTransactionModal = (type) => {
+  emit('createTransaction', type)
 }
 
 </script>
 <template>
-  <p class="balance-info__header">
+  <p class="text-center font-weight-bold">
     <strong> Ваш баланс: {{ income + expense }} RUB </strong>
   </p>
-  <div class="balance-info" @click="showNewTransactionModal">
-    <div class="balance-info__income" id="income">Доходы: {{ income }}</div>
-    <div class="balance-info__expense" id="expense">Расходы: {{ expense }}</div>
+  <div class="d-flex mx-auto justify-center align-items-center">
+    <v-card class="mx-2 my-8" width="344" title="Доходы:" :subtitle="income" link
+      @click="() => showNewTransactionModal('income')"></v-card>
+    <v-card class="mx-2 my-8" width="344" title="Расходы:" :subtitle="expense" link
+      @click="() => showNewTransactionModal('expense')"></v-card>
   </div>
 </template>
-<style scoped>
-.balance-info {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid lightgray;
-  border-radius: 25px;
-}
-
-.balance-info__income,
-.balance-info__expense {
-  width: 50%;
-  padding: 25px;
-  text-align: center;
-  align-content: center;
-  margin: auto;
-}
-
-.balance-info__income:hover,  .balance-info__expense:hover {
-  background-color: lightgray;
-}
-
-.balance-info__income {
-  border-right: 1px solid lightgray;
-}
-
-.balance-info__header {
-  text-align: center;
-}
-</style>
