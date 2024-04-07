@@ -4,23 +4,10 @@ import TransitionsHistory from "./components/TransitionsHistory.vue";
 import BalanceManager from "./components/BalanceManager.vue";
 import NewTransactionModal from "./components/NewTransactionModal.vue";
 import { ITransaction } from "./shared/types/types";
+import { Storage } from "./shared/storage";
 
 const transactions = ref([
-  {
-    title: "Продукты",
-    sum: -500,
-    date: 0,
-  },
-  {
-    title: "Аренда",
-    sum: -50000,
-    date: 1,
-  },
-  {
-    title: "Аванс",
-    sum: 99000,
-    date: 2,
-  },
+  ...Storage.getTransactions()
 ]);
 
 const income = ref(0);
@@ -54,14 +41,21 @@ const hideTransactionMaster = () => {
 const addTransaction = (transaction: ITransaction) => {
   transactions.value.push(transaction);
   hideTransactionMaster();
+  saveTransactions()
 };
 
 const editTransaction = (date) => {
   //todo
+  saveTransactions()
 }
 
 const deleteTransaction = (date) => {
   transactions.value = transactions.value.filter(transaction => transaction.date !== date)
+  saveTransactions()
+}
+
+const saveTransactions = () => {
+  Storage.saveTransactions(transactions.value)
 }
 
 </script>
