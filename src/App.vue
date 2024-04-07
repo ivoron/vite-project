@@ -2,7 +2,7 @@
 import { ref, watchEffect } from "vue";
 import TransitionsHistory from "./components/TransitionsHistory.vue";
 import BalanceManager from "./components/BalanceManager.vue";
-import NewTransactionModal from "./components/NewTransactionModal.vue";
+import TransactionModal from "./components/TransactionModal.vue";
 import { ITransaction } from "./shared/types/types";
 import { Storage } from "./shared/storage";
 
@@ -13,7 +13,7 @@ const transactions = ref([
 const income = ref(0);
 const expense = ref(0);
 const tab = ref(0)
-const isTransactionModalVisible = ref(false);
+const isModalVisible = ref(false);
 const transactionType = ref(null);
 
 watchEffect(() => {
@@ -29,18 +29,18 @@ watchEffect(() => {
   })
 })
 
-const showTransactionMaster = (type) => {
-  isTransactionModalVisible.value = true;
+const showTransactionModal = (type) => {
+  isModalVisible.value = true;
   transactionType.value = type;
 };
 
-const hideTransactionMaster = () => {
-  isTransactionModalVisible.value = false;
+const hideTransactionModal = () => {
+  isModalVisible.value = false;
 };
 
 const addTransaction = (transaction: ITransaction) => {
   transactions.value.push(transaction);
-  hideTransactionMaster();
+  isModalVisible.value = false
   saveTransactions()
 };
 
@@ -79,9 +79,9 @@ const saveTransactions = () => {
       {{ tab }}
     </v-window>
 
-    <NewTransactionModal v-if="isTransactionModalVisible" :transactionType="transactionType"
-      @addTransaction="addTransaction" @cancelTransaction="hideTransactionMaster" />
-    <BalanceManager :income="income" :expense="expense" @createTransaction="showTransactionMaster" />
+    <TransactionModal :isModalVisible="isModalVisible" :transactionType="transactionType"
+      @addTransaction="addTransaction" @cancelTransaction="hideTransactionModal"/>
+    <BalanceManager :income="income" :expense="expense" @createTransaction="showTransactionModal" />
     <TransitionsHistory :transactions="transactions" @delete-transaction="deleteTransaction"
       @edit-transaction="editTransaction" />
   </div>
